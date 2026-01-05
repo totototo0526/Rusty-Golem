@@ -1,0 +1,4 @@
+server_bat_path = "C:/Minecraft/Server/start.bat"
+start_time = "09:00"
+end_time = "21:00"
+discord_webhook_url = "https://discord.com/api/webhooks/..."

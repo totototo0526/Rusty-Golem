@@ -1,2 +1,5 @@
 target/
 *.exe
+config.toml
+mock_server.bat
+mock_server.sh
