@@ -32,17 +32,29 @@ fn send_discord_message(url: &str, message: &str) {
 }
 
 fn start_server(path: &str) -> io::Result<Child> {
-    // On Windows, running a .bat file often requires using "cmd /C"
-    // But sometimes it works directly. Since the user is on Windows, 
-    // we should try to execute it in a way that works for .bat.
-    // Usually: Command::new("cmd").args(&["/C", path])...
-    
-    Command::new("cmd")
-        .args(&["/C", path])
-        .stdin(Stdio::piped()) // Capture stdin to send commands later
-        .stdout(Stdio::inherit()) // Let the user see the server output in the terminal
-        .stderr(Stdio::inherit())
-        .spawn()
+    if cfg!(target_os = "windows") {
+        Command::new("cmd")
+            .args(&["/C", path])
+            .stdin(Stdio::piped())
+            .stdout(Stdio::inherit())
+            .stderr(Stdio::inherit())
+            .spawn()
+    } else {
+        // Assume Linux/Unix
+        // Execute directly if executable, or use sh if needed.
+        // For .sh files, often need "sh script.sh" or "./script.sh".
+        // Using "sh -c" helps if path includes arguments or environment setup.
+        // But simply Command::new(path) works if it has shebang and execute perms.
+        // To be safe and mimicking "cmd /C", let's use "sh -c".
+        
+         Command::new("sh")
+            .arg("-c")
+            .arg(path)
+            .stdin(Stdio::piped())
+            .stdout(Stdio::inherit())
+            .stderr(Stdio::inherit())
+            .spawn()
+    }
 }
 
 fn send_command(child: &mut Child, command: &str) {

@@ -1,4 +1,4 @@
-server_bat_path = "./mock_server.bat"
+server_bat_path = "./mock_server.sh"
 start_time = "00:00"
 end_time = "23:59"
 discord_webhook_url = "https://discord.com/api/webhooks/1457596856896065629/-DqqRccDf2Pzvr-WfJFHnMuEWLfOU_pyzIorvNLKOEtuBpf8J4bZPkXwzbPz5I6GvdAE"
